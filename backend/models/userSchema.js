@@ -1,28 +1,12 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      unique: true,
-      required: true, 
-      lowercase: true,
-      validate: [validator.isEmail, "Please provide a valid email"], 
-      trim: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-    },
-  },
-  { timestamps: true }
-);
+const userSchema = new Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ['admin', 'student', 'teacher'], required: true },
+    profile: { type: Schema.Types.ObjectId, refPath: 'role' }
+}, { timestamps: true });
 
-// Define models and export them
-const AdminLogin = mongoose.model('Admin Login', userSchema);
-const Student = mongoose.model('Student Login', userSchema);
-const Teacher = mongoose.model('Teacher Login', userSchema);
-
-module.exports = { AdminLogin, Student, Teacher }; // Export all models together
+const User = mongoose.model('User', userSchema);
+module.exports = User;

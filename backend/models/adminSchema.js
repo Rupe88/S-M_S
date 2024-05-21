@@ -1,10 +1,11 @@
 const mongoose=require("mongoose");
 const Schema=mongoose.Schema
-const teacherSchema = new Schema({
+
+const adminSchema = new Schema({
   name: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  classes: [{ type: Schema.Types.ObjectId, ref: 'Class' }]
+  permissions: [{ type: String }] // Example: ['manage_users', 'edit_classes', etc.]
 }, { timestamps: true });
 
-const Teacher = mongoose.model('Teacher', teacherSchema);
-module.exports = Teacher;
+const Admin = mongoose.model('Admin', adminSchema);
+module.exports = Admin;
